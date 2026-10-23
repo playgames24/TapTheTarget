@@ -4,11 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tap The Target</title>
+<meta name="theme-color" content="#0b1024">
+<title>Tap The Target - Arcade Challenge</title>
+
 <style>
 :root {
   --bg: #0b1024;
-  --panel: #171e3b;
   --text: #f7f8ff;
   --muted: #aab3d5;
   --purple: #8b5cf6;
@@ -29,15 +30,8 @@ body {
 }
 button { font: inherit; cursor: pointer; }
 button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
-.app {
-  width: min(960px, 100%);
-  margin: auto;
-  padding: 24px 18px 34px;
-}
-.topbar {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 12px; margin-bottom: 26px;
-}
+.app { width: min(960px, 100%); margin: auto; padding: 24px 18px 34px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 26px; }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .5px; }
 .brand-icon {
   display: grid; place-items: center; width: 42px; height: 42px;
@@ -45,10 +39,7 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
   box-shadow: 0 7px 24px #6d4bff55; font-size: 23px;
 }
 .brand small { display: block; color: var(--muted); font-size: 10px; letter-spacing: 2px; margin-top: 2px; }
-.icon-button {
-  border: 1px solid #ffffff20; background: #ffffff0b; color: white;
-  border-radius: 12px; padding: 10px 13px;
-}
+.icon-button { border: 1px solid #ffffff20; background: #ffffff0b; color: white; border-radius: 12px; padding: 10px 13px; }
 .screen { display: none; animation: appear .35s ease both; }
 .screen.active { display: block; }
 @keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -59,23 +50,16 @@ button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
   padding: 8px 13px; border-radius: 100px; font-size: 12px; font-weight: 800;
   letter-spacing: 1.5px; text-transform: uppercase;
 }
-h1 {
-  margin: 22px 0 12px; font-size: clamp(42px, 8vw, 76px);
-  line-height: .98; letter-spacing: -3px; font-weight: 1000;
-}
+h1 { margin: 22px 0 12px; font-size: clamp(42px, 8vw, 76px); line-height: .98; letter-spacing: -3px; font-weight: 1000; }
 .gradient-text {
   background: linear-gradient(95deg, #a98bff, #53eee3 55%, #ffe16c);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .subtitle { color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.7; font-size: 15px; }
 .target-showcase { height: 150px; display: grid; place-items: center; position: relative; }
-.target-showcase::before {
-  content: ""; position: absolute; width: 190px; height: 100px;
-  background: #8b5cf633; filter: blur(32px); border-radius: 50%;
-}
+.target-showcase::before { content: ""; position: absolute; width: 190px; height: 100px; background: #8b5cf633; filter: blur(32px); border-radius: 50%; }
 .demo-target {
-  width: 90px; height: 90px; border-radius: 50%; position: relative;
-  display: grid; place-items: center; font-size: 31px;
+  width: 90px; height: 90px; border-radius: 50%; position: relative; display: grid; place-items: center; font-size: 31px;
   background: radial-gradient(circle, #ffb2c7 0 15%, #ff548c 17% 35%, #c51e64 37% 52%, #ff80ac 54% 66%, #8b1c50 68%);
   box-shadow: 0 0 0 10px #ff548c15, 0 0 45px #ff548c88;
   animation: float 2.2s ease-in-out infinite;
@@ -83,17 +67,13 @@ h1 {
 @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-9px) scale(1.04); } }
 .primary-button {
   border: 0; border-radius: 15px; padding: 16px 28px;
-  background: linear-gradient(100deg, #9b70ff, #6654f5);
-  color: white; font-weight: 900; font-size: 16px;
+  background: linear-gradient(100deg, #9b70ff, #6654f5); color: white; font-weight: 900; font-size: 16px;
   box-shadow: 0 10px 28px #7658f544; transition: transform .15s, filter .15s;
 }
 .primary-button:hover { transform: translateY(-2px); filter: brightness(1.1); }
 .hero .primary-button { min-width: 210px; margin-top: 12px; }
 .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 30px 0; }
-.feature {
-  padding: 18px 14px; text-align: center; border-radius: 17px;
-  background: #ffffff08; border: 1px solid #ffffff12;
-}
+.feature { padding: 18px 14px; text-align: center; border-radius: 17px; background: #ffffff08; border: 1px solid #ffffff12; }
 .feature-icon { font-size: 25px; margin-bottom: 9px; }
 .feature strong { display: block; font-size: 13px; }
 .feature span { display: block; color: var(--muted); font-size: 11px; margin-top: 5px; line-height: 1.5; }
@@ -101,13 +81,17 @@ h1 {
 .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .level-card {
   border: 1px solid #ffffff16; border-radius: 15px; background: #ffffff08;
-  padding: 15px 5px; color: white; text-align: center; transition: .2s;
+  padding: 15px 5px; color: white; text-align: center; transition: .2s; min-width: 0;
 }
 .level-card:not(:disabled):hover { border-color: var(--purple); transform: translateY(-3px); background: #8b5cf622; }
 .level-card:disabled { opacity: .4; cursor: not-allowed; }
 .level-card .level-num { font-size: 21px; font-weight: 900; }
 .level-card small { display: block; color: var(--muted); font-size: 10px; margin-top: 5px; }
 .level-card .level-stars { color: var(--gold); font-size: 12px; min-height: 16px; margin-top: 5px; }
+.level-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 14px; }
+.level-nav button { border: 1px solid #ffffff20; background: #ffffff09; color: white; border-radius: 10px; padding: 9px 13px; }
+.level-nav button:disabled { opacity: .3; cursor: not-allowed; }
+.level-nav span { color: var(--muted); font-size: 12px; }
 .home-best { text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; }
 .home-best strong { color: var(--gold); }
 .game-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
@@ -116,10 +100,7 @@ h1 {
 .level-label strong { display: block; font-size: 17px; }
 .level-label small { color: var(--muted); font-size: 11px; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 18px 0; }
-.stat {
-  text-align: center; padding: 13px 5px; border-radius: 14px;
-  border: 1px solid #ffffff13; background: #ffffff08;
-}
+.stat { text-align: center; padding: 13px 5px; border-radius: 14px; border: 1px solid #ffffff13; background: #ffffff08; }
 .stat span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .stat strong { display: block; font-size: clamp(19px, 4vw, 26px); margin-top: 5px; font-variant-numeric: tabular-nums; }
 .timer-warning { color: var(--pink) !important; animation: pulse .6s infinite alternate; }
@@ -130,22 +111,17 @@ h1 {
 .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); transition: width .2s; }
 .arena {
   position: relative; height: 360px; min-height: 300px; overflow: hidden;
-  border: 1px solid #ffffff1c; border-radius: 22px;
-  background-color: #101832;
-  background-image: radial-gradient(#ffffff12 1px, transparent 1px);
-  background-size: 22px 22px;
-  box-shadow: inset 0 0 45px #0004;
-  touch-action: manipulation;
+  border: 1px solid #ffffff1c; border-radius: 22px; background-color: #101832;
+  background-image: radial-gradient(#ffffff12 1px, transparent 1px); background-size: 22px 22px;
+  box-shadow: inset 0 0 45px #0004; touch-action: manipulation;
 }
 .arena:focus-visible { outline: 2px solid var(--cyan); }
 .arena-hint { position: absolute; top: 14px; left: 0; right: 0; text-align: center; color: #9ba9ce; font-size: 11px; pointer-events: none; }
 .target {
-  position: absolute; width: 54px; height: 54px; border: 0; border-radius: 50%;
-  transform: translate(-50%, -50%); padding: 0; z-index: 2;
+  position: absolute; border: 0; border-radius: 50%; transform: translate(-50%, -50%); padding: 0; z-index: 2;
   display: grid; place-items: center; color: white; font-size: 19px;
   background: radial-gradient(circle, #ffedf4 0 10%, #ff6a9c 12% 28%, #df286a 30% 48%, #ff8bb5 50% 64%, #8f1649 66%);
-  box-shadow: 0 0 0 5px #ff548c18, 0 0 22px #ff548c88;
-  animation: targetIn .16s ease-out;
+  box-shadow: 0 0 0 5px #ff548c18, 0 0 22px #ff548c88; animation: targetIn .16s ease-out;
 }
 .target:hover { filter: brightness(1.15); }
 .target:active { transform: translate(-50%, -50%) scale(.87); }
@@ -160,9 +136,8 @@ h1 {
 .arena-bottom { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 11px; padding: 12px 3px; }
 .arena-bottom strong { color: var(--gold); }
 .overlay {
-  position: absolute; inset: 0; z-index: 10; display: none;
-  align-items: center; justify-content: center; padding: 20px;
-  background: #0b1024df; backdrop-filter: blur(8px); text-align: center;
+  position: absolute; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center;
+  padding: 20px; background: #0b1024df; backdrop-filter: blur(8px); text-align: center;
 }
 .overlay.show { display: flex; }
 .result-card { max-width: 350px; width: 100%; }
@@ -174,6 +149,11 @@ h1 {
 .result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
 .secondary-button { border: 1px solid #ffffff25; color: white; background: #ffffff0d; border-radius: 13px; padding: 13px 17px; font-weight: 800; }
 footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; }
+
+/* Reserved for a future approved advertisement placement.
+   No advertisement is loaded by this game yet. */
+.ad-slot { display: none; }
+
 @media (max-width: 540px) {
   .app { padding: 16px 12px 25px; }
   .topbar { margin-bottom: 10px; }
@@ -186,12 +166,15 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
   .arena { height: 340px; min-height: 290px; }
   .stats { gap: 6px; }
   .stat { padding: 11px 2px; }
+  .game-header { gap: 5px; }
+  .back-button, .icon-button { padding: 9px 8px; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 </style>
 </head>
+
 <body>
 <div class="app">
   <header class="topbar">
@@ -220,14 +203,20 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
 
       <div class="section-heading">Choose your level</div>
       <div class="level-grid" id="levelGrid"></div>
+      <div class="level-nav">
+        <button id="prevLevels">← Previous</button>
+        <span id="pageLabel">Levels 1–10</span>
+        <button id="nextLevels">Next →</button>
+      </div>
       <div class="home-best">🏆 Best score: <strong id="homeBest">0</strong> points</div>
+      <div class="home-best">🚀 Highest unlocked level: <strong id="highestLevel">1</strong></div>
     </section>
 
     <section class="screen" id="gameScreen">
       <div class="game-header">
         <button class="back-button" id="homeButton">← Home</button>
         <div class="level-label"><strong id="levelTitle">LEVEL 1</strong><small id="levelSubtitle">WARM UP</small></div>
-        <button class="icon-button" id="restartButton" aria-label="Restart level">↻ Restart</button>
+        <button class="icon-button" id="restartButton">↻ Restart</button>
       </div>
 
       <div class="stats">
@@ -259,6 +248,10 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
       <div class="arena-bottom"><span>🔴 Red: <strong>+1</strong> point</span><span>🟡 Gold: <strong>+3</strong> points</span></div>
     </section>
   </main>
+
+  <!-- Future ad placement can be added here after ad-network approval. -->
+  <div class="ad-slot" id="adSlot"></div>
+
   <footer>Made for quick fingers and sharp reflexes ✨</footer>
 </div>
 
@@ -266,14 +259,11 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
 (() => {
   "use strict";
 
-  const LEVELS = [
-    { taps: 10, size: 60, name: "WARM UP" },
-    { taps: 15, size: 52, name: "PICK UP SPEED" },
-    { taps: 20, size: 45, name: "GETTING QUICK" },
-    { taps: 25, size: 39, name: "REFLEX MASTER" },
-    { taps: 30, size: 34, name: "ULTIMATE CHALLENGE" }
-  ];
+  const FIRST_LEVEL_TAPS = [10, 15, 20, 25, 30];
+  const FIRST_LEVEL_SIZES = [60, 52, 45, 39, 34];
   const TIME_LIMIT = 30;
+  const LIVES_PER_LEVEL = 3;
+  const PAGE_SIZE = 10;
   const STORAGE_KEY = "tapTheTargetArcadeV2";
 
   const $ = id => document.getElementById(id);
@@ -288,23 +278,26 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
   let score = 0;
   let taps = 0;
   let timeLeft = TIME_LIMIT;
-  let lives = 3;
+  let lives = LIVES_PER_LEVEL;
   let timerId = null;
   let active = false;
+  let pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
   let soundEnabled = data.soundEnabled !== false;
   let audioContext = null;
 
   function loadData() {
+    const defaults = { unlocked: 1, bestScores: [], stars: [], soundEnabled: true };
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const unlocked = Number.isFinite(Number(saved.unlocked)) ? Math.floor(Number(saved.unlocked)) : 1;
       return {
-        unlocked: Math.max(1, Math.min(5, Number(saved.unlocked) || 1)),
-        bestScores: Array.isArray(saved.bestScores) ? saved.bestScores : [0,0,0,0,0],
-        stars: Array.isArray(saved.stars) ? saved.stars : [0,0,0,0,0],
+        unlocked: Math.max(1, Math.min(100000, unlocked)),
+        bestScores: Array.isArray(saved.bestScores) ? saved.bestScores : defaults.bestScores,
+        stars: Array.isArray(saved.stars) ? saved.stars : defaults.stars,
         soundEnabled: saved.soundEnabled !== false
       };
     } catch {
-      return { unlocked: 1, bestScores: [0,0,0,0,0], stars: [0,0,0,0,0], soundEnabled: true };
+      return defaults;
     }
   }
 
@@ -312,30 +305,74 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
   }
 
-  function showScreen(screen) {
-    homeScreen.classList.toggle("active", screen === "home");
-    gameScreen.classList.toggle("active", screen === "game");
+  function tapsRequired(n) {
+    if (n <= 5) return FIRST_LEVEL_TAPS[n - 1];
+    return 30 + (n - 5) * 5;
+  }
+
+  function targetSize(n) {
+    if (n <= 5) return FIRST_LEVEL_SIZES[n - 1];
+    return Math.max(24, 34 - (n - 5));
+  }
+
+  function levelName(n) {
+    const names = {
+      1: "WARM UP",
+      2: "PICK UP SPEED",
+      3: "GETTING QUICK",
+      4: "REFLEX MASTER",
+      5: "ULTIMATE CHALLENGE"
+    };
+    return names[n] || (n < 15 ? "REFLEX PRO" : n < 30 ? "SPEED LEGEND" : "ENDLESS CHALLENGE");
+  }
+
+  function bestFor(n) {
+    return Number(data.bestScores[n - 1]) || 0;
+  }
+
+  function starsFor(n) {
+    return Math.max(0, Math.min(3, Number(data.stars[n - 1]) || 0));
   }
 
   function totalBest() {
     return Math.max(0, ...data.bestScores.map(n => Number(n) || 0));
   }
 
+  function showScreen(screen) {
+    homeScreen.classList.toggle("active", screen === "home");
+    gameScreen.classList.toggle("active", screen === "game");
+  }
+
   function renderLevels() {
-    $("levelGrid").innerHTML = "";
-    LEVELS.forEach((item, index) => {
-      const number = index + 1;
+    const grid = $("levelGrid");
+    grid.innerHTML = "";
+
+    const pageEnd = pageStart + PAGE_SIZE - 1;
+    for (let number = pageStart; number <= pageEnd; number++) {
       const unlocked = number <= data.unlocked;
       const card = document.createElement("button");
       card.className = "level-card";
       card.disabled = !unlocked;
-      const stars = "★".repeat(data.stars[index] || 0) + "☆".repeat(3 - (data.stars[index] || 0));
-      card.innerHTML = `<div class="level-num">${unlocked ? number : "🔒"}</div>
-        <small>${item.taps} taps</small><div class="level-stars">${unlocked ? stars : "Locked"}</div>`;
-      card.addEventListener("click", () => startLevel(number));
-      $("levelGrid").appendChild(card);
-    });
+
+      const stars = "★".repeat(starsFor(number)) + "☆".repeat(3 - starsFor(number));
+      card.innerHTML = `
+        <div class="level-num">${unlocked ? number : "🔒"}</div>
+        <small>${tapsRequired(number)} taps</small>
+        <div class="level-stars">${unlocked ? stars : "Locked"}</div>
+      `;
+      if (unlocked) {
+        card.setAttribute("aria-label", `Play level ${number}, ${tapsRequired(number)} taps required`);
+        card.addEventListener("click", () => startLevel(number));
+      }
+      grid.appendChild(card);
+    }
+
+    $("prevLevels").disabled = pageStart <= 1;
+    $("nextLevels").disabled = false;
+    $("pageLabel").textContent = `Levels ${pageStart}–${pageEnd}`;
     $("homeBest").textContent = totalBest();
+    $("highestLevel").textContent = data.unlocked;
+    $("playButton").textContent = `PLAY LEVEL ${data.unlocked}  →`;
   }
 
   function updateSoundButton() {
@@ -365,27 +402,31 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     $("scoreValue").textContent = score;
     $("timeValue").textContent = timeLeft;
     $("timeValue").classList.toggle("timer-warning", timeLeft <= 8);
-    $("livesValue").textContent = "❤️".repeat(lives) + "🖤".repeat(3 - lives);
-    $("bestValue").textContent = data.bestScores[level - 1] || 0;
-    const required = LEVELS[level - 1].taps;
+    $("livesValue").textContent = "❤️".repeat(lives) + "🖤".repeat(LIVES_PER_LEVEL - lives);
+    $("bestValue").textContent = bestFor(level);
+
+    const required = tapsRequired(level);
     $("progressText").textContent = `${taps} / ${required} taps`;
     $("progressFill").style.width = `${Math.min(100, taps / required * 100)}%`;
   }
 
   function moveTarget() {
     if (!active) return;
+
     const rect = arena.getBoundingClientRect();
-    const size = LEVELS[level - 1].size;
+    const size = targetSize(level);
     const padding = 12;
     const minX = Math.min(padding + size / 2, rect.width / 2);
     const maxX = Math.max(minX, rect.width - padding - size / 2);
     const minY = Math.min(48 + size / 2, rect.height / 2);
     const maxY = Math.max(minY, rect.height - padding - size / 2);
+
     target.style.left = `${minX + Math.random() * (maxX - minX)}px`;
     target.style.top = `${minY + Math.random() * (maxY - minY)}px`;
     target.style.width = `${size}px`;
     target.style.height = `${size}px`;
-    const golden = Math.random() < .15;
+
+    const golden = Math.random() < 0.15;
     target.classList.toggle("golden", golden);
     target.textContent = golden ? "★" : "";
     target.setAttribute("aria-label", golden ? "Golden target, worth 3 points" : "Target, worth 1 point");
@@ -403,26 +444,33 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
   }
 
   function startLevel(number) {
-    if (number < 1 || number > data.unlocked) return;
+    number = Math.floor(Number(number));
+    if (!Number.isFinite(number) || number < 1 || number > data.unlocked) return;
+
     clearInterval(timerId);
     level = number;
     score = 0;
     taps = 0;
     timeLeft = TIME_LIMIT;
-    lives = 3;
+    lives = LIVES_PER_LEVEL;
     active = true;
+
     overlay.classList.remove("show");
     $("levelTitle").textContent = `LEVEL ${level}`;
-    $("levelSubtitle").textContent = LEVELS[level - 1].name;
+    $("levelSubtitle").textContent = levelName(level);
     target.hidden = false;
+
     showScreen("game");
     updateStats();
     moveTarget();
+
     timerId = setInterval(() => {
       if (!active) return;
       timeLeft--;
       updateStats();
-      if (timeLeft <= 0) finishLevel(false, "Time is up! Try again and beat your best.");
+      if (timeLeft <= 0) {
+        finishLevel(false, "Time is up! Try again and beat your best.");
+      }
     }, 1000);
   }
 
@@ -432,14 +480,16 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     clearInterval(timerId);
     target.hidden = true;
 
-    const previousBest = Number(data.bestScores[level - 1]) || 0;
-    data.bestScores[level - 1] = Math.max(previousBest, score);
+    data.bestScores[level - 1] = Math.max(bestFor(level), score);
     let earnedStars = 0;
 
     if (won) {
       earnedStars = timeLeft >= 15 ? 3 : timeLeft >= 8 ? 2 : 1;
-      data.stars[level - 1] = Math.max(data.stars[level - 1] || 0, earnedStars);
-      data.unlocked = Math.max(data.unlocked, Math.min(5, level + 1));
+      data.stars[level - 1] = Math.max(starsFor(level), earnedStars);
+
+      // Unlock the next level. Levels are generated dynamically.
+      data.unlocked = Math.max(data.unlocked, level + 1);
+
       playTone(660, .12);
       setTimeout(() => playTone(880, .18), 120);
     } else {
@@ -448,53 +498,67 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
 
     saveData();
     renderLevels();
-    $("resultIcon").textContent = won ? (level === 5 ? "🏆" : "🎉") : "⏱️";
-    $("resultTitle").textContent = won ? (level === 5 ? "You Did It!" : "Level Complete!") : "Game Over!";
+
+    $("resultIcon").textContent = won ? "🎉" : "⏱️";
+    $("resultTitle").textContent = won ? "Level Complete!" : "Game Over!";
     $("resultMessage").textContent = won
-      ? (level === 5 ? "Amazing! You conquered every level!" : `${message} Level ${level + 1} is now unlocked!`)
+      ? `${message} Level ${level + 1} is now unlocked!`
       : message;
     $("resultScore").textContent = `${score} point${score === 1 ? "" : "s"}`;
-    $("resultStars").textContent = won ? "★".repeat(earnedStars) + "☆".repeat(3 - earnedStars) : "☆☆☆";
+    $("resultStars").textContent = won
+      ? "★".repeat(earnedStars) + "☆".repeat(3 - earnedStars)
+      : "☆☆☆";
 
     const actions = $("resultActions");
     actions.innerHTML = "";
-    const addAction = (label, className, handler) => {
+
+    function addAction(label, className, handler) {
       const button = document.createElement("button");
       button.className = className;
       button.textContent = label;
       button.addEventListener("click", handler);
       actions.appendChild(button);
-    };
+    }
 
-    if (won && level < 5) {
-      addAction("Next Level →", "primary-button", () => startLevel(level + 1));
-    } else if (won) {
-      addAction("Play Again", "primary-button", () => startLevel(1));
+    if (won) {
+      addAction(`Next Level ${level + 1} →`, "primary-button", () => startLevel(level + 1));
     } else {
       addAction("Try Again", "primary-button", () => startLevel(level));
     }
+
     addAction("Home", "secondary-button", () => {
       overlay.classList.remove("show");
+      pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
       showScreen("home");
       renderLevels();
     });
+
     overlay.classList.add("show");
   }
 
   target.addEventListener("click", event => {
     event.stopPropagation();
     if (!active) return;
+
     const rect = target.getBoundingClientRect();
     const arenaRect = arena.getBoundingClientRect();
     const golden = target.classList.contains("golden");
     const points = golden ? 3 : 1;
+
     score += points;
     taps++;
-    floatScore(rect.left - arenaRect.left + rect.width / 2, rect.top - arenaRect.top, points, golden);
+
+    floatScore(
+      rect.left - arenaRect.left + rect.width / 2,
+      rect.top - arenaRect.top,
+      points,
+      golden
+    );
+
     playTone(golden ? 1050 : 620, golden ? .15 : .07, golden ? "sine" : "triangle");
     updateStats();
 
-    if (taps >= LEVELS[level - 1].taps) {
+    if (taps >= tapsRequired(level)) {
       finishLevel(true, "You reached the target!");
     } else {
       moveTarget();
@@ -502,14 +566,20 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
   });
 
   arena.addEventListener("click", event => {
-    if (!active || event.target === target || event.target.closest(".overlay") || event.target.closest(".target")) return;
+    if (!active || event.target === target ||
+        event.target.closest(".overlay") || event.target.closest(".target")) return;
+
     lives--;
     playTone(150, .13, "square", .025);
     updateStats();
-    if (lives <= 0) finishLevel(false, "You ran out of lives. Tap only the target!");
+
+    if (lives <= 0) {
+      finishLevel(false, "You ran out of lives. Tap only the target!");
+    }
   });
 
-  $("playButton").addEventListener("click", () => startLevel(1));
+  $("playButton").addEventListener("click", () => startLevel(data.unlocked));
+
   $("homeButton").addEventListener("click", () => {
     if (active) {
       active = false;
@@ -517,10 +587,23 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
       target.hidden = true;
     }
     overlay.classList.remove("show");
+    pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
     showScreen("home");
     renderLevels();
   });
+
   $("restartButton").addEventListener("click", () => startLevel(level));
+
+  $("prevLevels").addEventListener("click", () => {
+    pageStart = Math.max(1, pageStart - PAGE_SIZE);
+    renderLevels();
+  });
+
+  $("nextLevels").addEventListener("click", () => {
+  pageStart += PAGE_SIZE;
+  renderLevels();
+});
+
   $("soundButton").addEventListener("click", () => {
     soundEnabled = !soundEnabled;
     data.soundEnabled = soundEnabled;
