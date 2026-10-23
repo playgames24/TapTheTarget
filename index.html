@@ -20,7 +20,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .levelBest{font-size:15px}
 .stars{margin-top:8px;font-size:19px}
 #gameScreen{display:none}
-#gameInfo{width:94%;max-width:850px;margin:20px auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#gameInfo{width:94%;max-width:950px;margin:20px auto;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
 .infoCard{padding:12px 5px;border-radius:15px;background:#ffffff1f}
 .infoLabel{display:block;font-size:12px;opacity:.8;margin-bottom:6px}
 .infoValue{font-size:22px;font-weight:bold}
@@ -30,6 +30,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 #progressBar{height:100%;width:0;background:linear-gradient(90deg,#00f2fe,#4facfe);transition:width .2s}
 #gameArea{position:relative;overflow:hidden;width:92%;max-width:700px;height:480px;margin:20px auto 40px;background:linear-gradient(145deg,#fff,#eef4ff);border-radius:24px;box-shadow:0 15px 40px #0005;cursor:crosshair;user-select:none;touch-action:manipulation}
 #target{position:absolute;width:60px;height:60px;border-radius:50%;display:none;cursor:pointer;background:radial-gradient(circle,#fff 0 13%,#ff4040 15% 35%,#fff 37% 53%,#ff3030 55% 100%);box-shadow:0 5px 15px #f004;touch-action:manipulation}
+#target.golden{background:radial-gradient(circle,#fffde7 0%,#ffe866 20%,#ffc400 48%,#ff9800 72%,#d97900 100%);box-shadow:0 0 12px #ffd700,0 0 25px #ffb300}
 #target.hit{animation:hit .2s ease}
 @keyframes hit{50%{transform:scale(.7)}}
 .scorePopup,.missPopup{position:absolute;pointer-events:none;font-size:25px;font-weight:bold;animation:float .65s forwards;z-index:5}
@@ -39,12 +40,12 @@ button:disabled{opacity:.5;cursor:not-allowed}
 #messageTitle{font-size:clamp(24px,4vw,31px);font-weight:bold}
 #messageText{font-size:18px;line-height:1.5;margin:15px 0}
 #starResult{font-size:35px;margin:12px}
-@media(max-width:600px){#gameInfo{grid-template-columns:repeat(2,1fr)}#gameArea{height:420px}#levelButtons{grid-template-columns:repeat(2,1fr)}.infoValue{font-size:19px}}
+@media(max-width:700px){#gameInfo{grid-template-columns:repeat(2,1fr)}#gameArea{height:420px}#levelButtons{grid-template-columns:repeat(2,1fr)}.infoValue{font-size:19px}}
 </style>
 </head>
 <body>
 <h1>🎯 Tap The Target</h1>
-<div class="subtitle">How fast can you tap?</div>
+<div class="subtitle">Hit red targets, hunt golden bonuses!</div>
 
 <section id="levelSelection">
 <h2>Choose Your Level</h2>
@@ -54,6 +55,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <section id="gameScreen">
 <div id="gameInfo">
 <div class="infoCard"><span class="infoLabel">LEVEL</span><span class="infoValue" id="level">1</span></div>
+<div class="infoCard"><span class="infoLabel">SCORE</span><span class="infoValue" id="score">0</span></div>
 <div class="infoCard"><span class="infoLabel">TAPS</span><span class="infoValue" id="taps">0</span> / <span class="infoValue" id="targetTaps">10</span></div>
 <div class="infoCard"><span class="infoLabel">TIME</span><span class="infoValue" id="timer">30</span></div>
 <div class="infoCard"><span class="infoLabel">LIVES</span><span class="infoValue" id="lives">❤️❤️❤️</span></div>
@@ -84,11 +86,21 @@ const levels=[
  {number:4,taps:25,size:35},
  {number:5,taps:30,size:30}
 ];
-const LEVEL_TIME=30,STARTING_LIVES=3;
+const LEVEL_TIME=30;
+const STARTING_LIVES=3;
 const $=id=>document.getElementById(id);
 
-let currentLevel=0,taps=0,lives=STARTING_LIVES,timeLeft=LEVEL_TIME;
-let gameTimer=null,gameRunning=false,roundEnded=false,audioContext=null;
+let currentLevel=0;
+let taps=0;
+let score=0;
+let lives=STARTING_LIVES;
+let timeLeft=LEVEL_TIME;
+let gameTimer=null;
+let gameRunning=false;
+let roundEnded=false;
+let audioContext=null;
+let targetIsGolden=false;
+
 let soundEnabled=localStorage.getItem("soundEnabled")!=="false";
 let unlockedLevel=Math.max(1,Math.min(5,Number(localStorage.getItem("unlockedLevel"))||1));
 let bestScores=readObject("bestScores");
@@ -98,17 +110,20 @@ function readObject(key){
  try{return JSON.parse(localStorage.getItem(key))||{}}
  catch{return {}}
 }
+
 function saveProgress(){
  localStorage.setItem("unlockedLevel",unlockedLevel);
  localStorage.setItem("bestScores",JSON.stringify(bestScores));
  localStorage.setItem("bestStars",JSON.stringify(bestStars));
 }
+
 function initAudio(){
  const AudioCtx=window.AudioContext||window.webkitAudioContext;
  if(!AudioCtx)return;
  if(!audioContext)audioContext=new AudioCtx();
  if(audioContext.state==="suspended")audioContext.resume();
 }
+
 function tone(freq,duration=.1,type="sine",volume=.06,delay=0){
  if(!soundEnabled)return;
  initAudio();
@@ -116,41 +131,48 @@ function tone(freq,duration=.1,type="sine",volume=.06,delay=0){
  const start=audioContext.currentTime+delay;
  const osc=audioContext.createOscillator();
  const gain=audioContext.createGain();
- osc.type=type;osc.frequency.setValueAtTime(freq,start);
+ osc.type=type;
+ osc.frequency.setValueAtTime(freq,start);
  gain.gain.setValueAtTime(volume,start);
  gain.gain.exponentialRampToValueAtTime(.001,start+duration);
- osc.connect(gain);gain.connect(audioContext.destination);
- osc.start(start);osc.stop(start+duration);
+ osc.connect(gain);
+ gain.connect(audioContext.destination);
+ osc.start(start);
+ osc.stop(start+duration);
 }
-function soundSequence(notes){
- notes.forEach((n,i)=>tone(n,.15,"sine",.07,i*.13));
+
+function updateSoundButton(){
+ $("soundButton").textContent=soundEnabled?"🔊 Sound":"🔇 Sound";
 }
-function updateSoundButton(){$("soundButton").textContent=soundEnabled?"🔊 Sound":"🔇 Sound"}
+
 $("soundButton").addEventListener("click",()=>{
  soundEnabled=!soundEnabled;
  localStorage.setItem("soundEnabled",String(soundEnabled));
  updateSoundButton();
  if(soundEnabled)tone(600);
 });
+
 function starsHTML(count){
  return [1,2,3].map(n=>n<=count?"⭐":"☆").join("");
 }
+
 function renderLevels(){
  $("levelButtons").innerHTML="";
  levels.forEach((item,index)=>{
   const unlocked=item.number<=unlockedLevel;
-  const score=Number(bestScores[item.number])||0;
+  const scoreBest=Number(bestScores[item.number])||0;
   const stars=Number(bestStars[item.number])||0;
   const button=document.createElement("button");
   button.className="levelButton"+(stars===3?" completed":"");
   button.disabled=!unlocked;
-  button.innerHTML=unlocked?
-   `<span class="levelNumber">${item.number}</span><span class="levelBest">Best: ${score}</span><div class="stars">${starsHTML(stars)}</div>`:
-   `<span class="levelNumber">🔒</span><span class="levelBest">Level ${item.number}</span>`;
+  button.innerHTML=unlocked
+   ?`<span class="levelNumber">${item.number}</span><span class="levelBest">Best: ${scoreBest}</span><div class="stars">${starsHTML(stars)}</div>`
+   :`<span class="levelNumber">🔒</span><span class="levelBest">Level ${item.number}</span><div class="stars">Locked</div>`;
   button.addEventListener("click",()=>openLevel(index));
   $("levelButtons").appendChild(button);
  });
 }
+
 function openLevel(index){
  currentLevel=index;
  $("levelSelection").style.display="none";
@@ -158,31 +180,44 @@ function openLevel(index){
  loadLevel();
  window.scrollTo({top:0,behavior:"smooth"});
 }
+
 function loadLevel(){
- clearInterval(gameTimer);gameRunning=false;roundEnded=false;
+ clearInterval(gameTimer);
+ gameRunning=false;
+ roundEnded=false;
  const item=levels[currentLevel];
- taps=0;lives=STARTING_LIVES;timeLeft=LEVEL_TIME;
+ taps=0;
+ score=0;
+ lives=STARTING_LIVES;
+ timeLeft=LEVEL_TIME;
+ targetIsGolden=false;
+
  $("level").textContent=item.number;
- $("taps").textContent="0";
+ $("score").textContent=score;
+ $("taps").textContent=taps;
  $("targetTaps").textContent=item.taps;
  $("timer").textContent=timeLeft;
  updateLives();
  $("progressBar").style.width="0%";
- $("levelIntro").textContent="🎯 Hit the target and don't miss!";
+ $("levelIntro").textContent="🎯 Red = +1 point | Golden = +3 points";
  $("target").style.width=item.size+"px";
  $("target").style.height=item.size+"px";
+ $("target").classList.remove("golden","hit");
  $("target").style.display="none";
  $("messageBox").style.display="none";
  $("startButton").style.display="inline-block";
  $("startButton").textContent="▶️ Start Level "+item.number;
 }
+
 function startLevel(){
  clearInterval(gameTimer);
- loadLevel();initAudio();
+ loadLevel();
+ initAudio();
  gameRunning=true;
  $("startButton").style.display="none";
  $("target").style.display="block";
  moveTarget();
+
  gameTimer=setInterval(()=>{
   if(!gameRunning)return;
   timeLeft--;
@@ -190,91 +225,168 @@ function startLevel(){
   if(timeLeft<=0)endLevel(false,"time");
  },1000);
 }
+
 function moveTarget(){
- const area=$("gameArea"),target=$("target");
+ const area=$("gameArea");
+ const target=$("target");
  const maxX=Math.max(0,area.clientWidth-target.offsetWidth);
  const maxY=Math.max(0,area.clientHeight-target.offsetHeight);
  target.style.left=Math.random()*maxX+"px";
  target.style.top=Math.random()*maxY+"px";
+
+ // A 15% chance of a golden target
+ targetIsGolden=Math.random()<0.15;
+ target.classList.toggle("golden",targetIsGolden);
 }
+
 function popup(text,x,y,miss=false){
  const node=document.createElement("div");
  node.className=miss?"missPopup":"scorePopup";
  node.textContent=text;
- node.style.left=x+"px";node.style.top=y+"px";
+ node.style.left=x+"px";
+ node.style.top=y+"px";
  $("gameArea").appendChild(node);
  setTimeout(()=>node.remove(),700);
 }
+
 function updateLives(){
- $("lives").textContent="❤️".repeat(Math.max(0,lives))+"🖤".repeat(STARTING_LIVES-Math.max(0,lives));
+ $("lives").textContent=
+  "❤️".repeat(Math.max(0,lives))+
+  "🖤".repeat(STARTING_LIVES-Math.max(0,lives));
 }
+
 $("target").addEventListener("click",event=>{
  event.stopPropagation();
  if(!gameRunning)return;
+
+ const wasGolden=targetIsGolden;
+ const pointsEarned=wasGolden?3:1;
+
  taps++;
+ score+=pointsEarned;
+
  $("taps").textContent=taps;
+ $("score").textContent=score;
+
  const item=levels[currentLevel];
  $("progressBar").style.width=Math.min(100,taps/item.taps*100)+"%";
+
  const target=$("target");
- target.classList.remove("hit");void target.offsetWidth;target.classList.add("hit");
- tone(700,.08,"sine",.06);
- popup("+1",target.offsetLeft,target.offsetTop);
- if(taps>=item.taps){endLevel(true,"complete");return}
+ target.classList.remove("hit");
+ void target.offsetWidth;
+ target.classList.add("hit");
+
+ if(wasGolden){
+  tone(950,.12,"sine",.08);
+  tone(1250,.15,"sine",.07,.1);
+  popup("+3 ⭐",target.offsetLeft,target.offsetTop);
+ }else{
+  tone(700,.08,"sine",.06);
+  popup("+1",target.offsetLeft,target.offsetTop);
+ }
+
+ if(taps>=item.taps){
+  endLevel(true,"complete");
+  return;
+ }
+
  moveTarget();
 });
+
 $("gameArea").addEventListener("click",event=>{
  if(!gameRunning||event.target!==$("gameArea"))return;
- lives--;updateLives();tone(180,.12,"square",.05);
+
+ lives--;
+ updateLives();
+ tone(180,.12,"square",.05);
  popup("−1 ❤️",event.offsetX,event.offsetY,true);
  $("levelIntro").textContent="Careful! You lost a life.";
- if(lives<=0){endLevel(false,"lives");return}
+
+ if(lives<=0){
+  endLevel(false,"lives");
+  return;
+ }
+
  moveTarget();
 });
+
 function endLevel(success,reason){
  if(roundEnded)return;
- roundEnded=true;gameRunning=false;clearInterval(gameTimer);
+ roundEnded=true;
+ gameRunning=false;
+ clearInterval(gameTimer);
  $("target").style.display="none";
  $("messageBox").style.display="block";
+
  const item=levels[currentLevel];
  bestScores[item.number]=Math.max(Number(bestScores[item.number])||0,taps);
+
  if(success){
   const earned=timeLeft>=15?3:timeLeft>=8?2:1;
   bestStars[item.number]=Math.max(Number(bestStars[item.number])||0,earned);
   unlockedLevel=Math.max(unlockedLevel,Math.min(5,item.number+1));
   saveProgress();
+
   $("starResult").textContent=starsHTML(earned);
-  tone(523,.12);tone(659,.12,"sine",.07,.13);tone(784,.2,"sine",.07,.26);
+  tone(523,.12,"sine",.08);
+  tone(659,.12,"sine",.07,.13);
+  tone(784,.2,"sine",.07,.26);
+
   if(currentLevel===levels.length-1){
    $("messageTitle").textContent="🏆 You Won!";
-   $("messageText").textContent="Amazing! You completed all 5 levels!";
+   $("messageText").textContent=`All five levels completed! Final level score: ${score} points.`;
    $("nextButton").textContent="🔄 Play Again";
   }else{
    $("messageTitle").textContent="🎉 Level Complete!";
-   $("messageText").textContent=`You completed Level ${item.number} with ${taps} taps and ${timeLeft} seconds remaining!`;
+   $("messageText").textContent=`Level ${item.number} completed! Score: ${score} points. Taps: ${taps}. Time remaining: ${timeLeft} seconds.`;
    $("nextButton").textContent="➡️ Next Level";
   }
  }else{
-  saveProgress();tone(350,.18,"sawtooth",.05);tone(220,.3,"sawtooth",.05,.18);
+  saveProgress();
+  tone(350,.18,"sawtooth",.05);
+  tone(220,.3,"sawtooth",.05,.18);
   $("starResult").textContent="😢";
   $("messageTitle").textContent=reason==="lives"?"💥 Game Over!":"⏰ Time's Up!";
-  $("messageText").textContent=reason==="lives"?
-   `You ran out of lives. Final taps: ${taps} / ${item.taps}.`:
-   `You got ${taps} out of ${item.taps} taps. Lives remaining: ${lives}.`;
+  $("messageText").textContent=reason==="lives"
+   ?`You ran out of lives. Score: ${score}. Taps: ${taps} / ${item.taps}.`
+   :`Time's up! Score: ${score}. Taps: ${taps} / ${item.taps}. Lives remaining: ${lives}.`;
   $("nextButton").textContent="🔄 Try Again";
  }
 }
+
 $("startButton").addEventListener("click",startLevel);
+
 $("backButton").addEventListener("click",()=>{
- clearInterval(gameTimer);gameRunning=false;roundEnded=true;
+ clearInterval(gameTimer);
+ gameRunning=false;
+ roundEnded=true;
+ $("target").style.display="none";
+ $("messageBox").style.display="none";
  $("gameScreen").style.display="none";
  $("levelSelection").style.display="block";
  renderLevels();
 });
+
 $("nextButton").addEventListener("click",()=>{
- if($("nextButton").textContent.includes("Next Level"))currentLevel++;
- else if($("nextButton").textContent.includes("Play Again"))currentLevel=0;
+ if($("nextButton").textContent.includes("Next Level")){
+  currentLevel++;
+ }else if($("nextButton").textContent.includes("Play Again")){
+  currentLevel=0;
+ }
  loadLevel();
 });
+
+function restoreOldStars(){
+ levels.forEach(item=>{
+  const oldBest=Number(bestScores[item.number])||0;
+  if(oldBest>=item.taps&&!bestStars[item.number]){
+   bestStars[item.number]=1;
+  }
+ });
+ saveProgress();
+}
+
+restoreOldStars();
 updateSoundButton();
 renderLevels();
 </script>
