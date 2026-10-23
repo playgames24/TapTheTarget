@@ -9,168 +9,146 @@
 
 <style>
 :root {
-  --bg: #0b1024;
-  --text: #f7f8ff;
-  --muted: #aab3d5;
-  --purple: #8b5cf6;
-  --cyan: #42e8e0;
-  --pink: #ff548c;
-  --gold: #ffd447;
+  --bg:#0b1024; --text:#f7f8ff; --muted:#aab3d5;
+  --purple:#8b5cf6; --cyan:#42e8e0; --pink:#ff548c; --gold:#ffd447;
 }
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at 15% 5%, #29225d 0, transparent 35%),
-    radial-gradient(ellipse at 90% 90%, #123b56 0, transparent 35%),
-    var(--bg);
+  margin:0; min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:radial-gradient(ellipse at 15% 5%,#29225d 0,transparent 35%),
+             radial-gradient(ellipse at 90% 90%,#123b56 0,transparent 35%),var(--bg);
 }
-button { font: inherit; cursor: pointer; }
-button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
-.app { width: min(960px, 100%); margin: auto; padding: 24px 18px 34px; }
-.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 26px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .5px; }
+button { font:inherit; cursor:pointer; }
+button:focus-visible { outline:3px solid var(--cyan); outline-offset:4px; }
+.app { width:min(960px,100%); margin:auto; padding:24px 18px 34px; }
+.topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:26px; }
+.brand { display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.5px; }
 .brand-icon {
-  display: grid; place-items: center; width: 42px; height: 42px;
-  border-radius: 14px; background: linear-gradient(135deg, var(--purple), #5145cd);
-  box-shadow: 0 7px 24px #6d4bff55; font-size: 23px;
+  display:grid; place-items:center; width:42px; height:42px; border-radius:14px;
+  background:linear-gradient(135deg,var(--purple),#5145cd); box-shadow:0 7px 24px #6d4bff55; font-size:23px;
 }
-.brand small { display: block; color: var(--muted); font-size: 10px; letter-spacing: 2px; margin-top: 2px; }
-.icon-button { border: 1px solid #ffffff20; background: #ffffff0b; color: white; border-radius: 12px; padding: 10px 13px; }
-.screen { display: none; animation: appear .35s ease both; }
-.screen.active { display: block; }
-@keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.hero { text-align: center; padding: 32px 12px 20px; }
+.brand small { display:block; color:var(--muted); font-size:10px; letter-spacing:2px; margin-top:2px; }
+.icon-button { border:1px solid #ffffff20; background:#ffffff0b; color:white; border-radius:12px; padding:10px 13px; }
+.screen { display:none; animation:appear .35s ease both; }
+.screen.active { display:block; }
+@keyframes appear { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.hero { text-align:center; padding:32px 12px 20px; }
 .eyebrow {
-  display: inline-flex; align-items: center; gap: 7px;
-  border: 1px solid #8b5cf655; color: #d6c7ff; background: #8b5cf61c;
-  padding: 8px 13px; border-radius: 100px; font-size: 12px; font-weight: 800;
-  letter-spacing: 1.5px; text-transform: uppercase;
+  display:inline-flex; align-items:center; gap:7px; border:1px solid #8b5cf655;
+  color:#d6c7ff; background:#8b5cf61c; padding:8px 13px; border-radius:100px;
+  font-size:12px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
 }
-h1 { margin: 22px 0 12px; font-size: clamp(42px, 8vw, 76px); line-height: .98; letter-spacing: -3px; font-weight: 1000; }
-.gradient-text {
-  background: linear-gradient(95deg, #a98bff, #53eee3 55%, #ffe16c);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.subtitle { color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.7; font-size: 15px; }
-.target-showcase { height: 150px; display: grid; place-items: center; position: relative; }
-.target-showcase::before { content: ""; position: absolute; width: 190px; height: 100px; background: #8b5cf633; filter: blur(32px); border-radius: 50%; }
+h1 { margin:22px 0 12px; font-size:clamp(42px,8vw,76px); line-height:.98; letter-spacing:-3px; font-weight:1000; }
+.gradient-text { background:linear-gradient(95deg,#a98bff,#53eee3 55%,#ffe16c); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.subtitle { color:var(--muted); max-width:460px; margin:0 auto; line-height:1.7; font-size:15px; }
+.target-showcase { height:150px; display:grid; place-items:center; position:relative; }
+.target-showcase::before { content:""; position:absolute; width:190px; height:100px; background:#8b5cf633; filter:blur(32px); border-radius:50%; }
 .demo-target {
-  width: 90px; height: 90px; border-radius: 50%; position: relative; display: grid; place-items: center; font-size: 31px;
-  background: radial-gradient(circle, #ffb2c7 0 15%, #ff548c 17% 35%, #c51e64 37% 52%, #ff80ac 54% 66%, #8b1c50 68%);
-  box-shadow: 0 0 0 10px #ff548c15, 0 0 45px #ff548c88;
-  animation: float 2.2s ease-in-out infinite;
+  width:90px; height:90px; border-radius:50%; position:relative; display:grid; place-items:center; font-size:31px;
+  background:radial-gradient(circle,#ffb2c7 0 15%,#ff548c 17% 35%,#c51e64 37% 52%,#ff80ac 54% 66%,#8b1c50 68%);
+  box-shadow:0 0 0 10px #ff548c15,0 0 45px #ff548c88; animation:float 2.2s ease-in-out infinite;
 }
-@keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-9px) scale(1.04); } }
+@keyframes float { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-9px) scale(1.04); } }
 .primary-button {
-  border: 0; border-radius: 15px; padding: 16px 28px;
-  background: linear-gradient(100deg, #9b70ff, #6654f5); color: white; font-weight: 900; font-size: 16px;
-  box-shadow: 0 10px 28px #7658f544; transition: transform .15s, filter .15s;
+  border:0; border-radius:15px; padding:16px 28px;
+  background:linear-gradient(100deg,#9b70ff,#6654f5); color:white; font-weight:900; font-size:16px;
+  box-shadow:0 10px 28px #7658f544; transition:transform .15s,filter .15s;
 }
-.primary-button:hover { transform: translateY(-2px); filter: brightness(1.1); }
-.hero .primary-button { min-width: 210px; margin-top: 12px; }
-.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 30px 0; }
-.feature { padding: 18px 14px; text-align: center; border-radius: 17px; background: #ffffff08; border: 1px solid #ffffff12; }
-.feature-icon { font-size: 25px; margin-bottom: 9px; }
-.feature strong { display: block; font-size: 13px; }
-.feature span { display: block; color: var(--muted); font-size: 11px; margin-top: 5px; line-height: 1.5; }
-.section-heading { font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin: 25px 0 13px; }
-.level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.level-card {
-  border: 1px solid #ffffff16; border-radius: 15px; background: #ffffff08;
-  padding: 15px 5px; color: white; text-align: center; transition: .2s; min-width: 0;
-}
-.level-card:not(:disabled):hover { border-color: var(--purple); transform: translateY(-3px); background: #8b5cf622; }
-.level-card:disabled { opacity: .4; cursor: not-allowed; }
-.level-card .level-num { font-size: 21px; font-weight: 900; }
-.level-card small { display: block; color: var(--muted); font-size: 10px; margin-top: 5px; }
-.level-card .level-stars { color: var(--gold); font-size: 12px; min-height: 16px; margin-top: 5px; }
-.level-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 14px; }
-.level-nav button { border: 1px solid #ffffff20; background: #ffffff09; color: white; border-radius: 10px; padding: 9px 13px; }
-.level-nav button:disabled { opacity: .3; cursor: not-allowed; }
-.level-nav span { color: var(--muted); font-size: 12px; }
-.home-best { text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; }
-.home-best strong { color: var(--gold); }
-.game-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
-.back-button { background: transparent; color: var(--muted); border: 1px solid #ffffff20; border-radius: 11px; padding: 10px 12px; }
-.level-label { text-align: center; }
-.level-label strong { display: block; font-size: 17px; }
-.level-label small { color: var(--muted); font-size: 11px; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 18px 0; }
-.stat { text-align: center; padding: 13px 5px; border-radius: 14px; border: 1px solid #ffffff13; background: #ffffff08; }
-.stat span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
-.stat strong { display: block; font-size: clamp(19px, 4vw, 26px); margin-top: 5px; font-variant-numeric: tabular-nums; }
-.timer-warning { color: var(--pink) !important; animation: pulse .6s infinite alternate; }
-@keyframes pulse { to { opacity: .55; } }
-.progress-wrap { margin-bottom: 14px; }
-.progress-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-.progress-track { height: 7px; border-radius: 10px; background: #ffffff14; overflow: hidden; }
-.progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--purple), var(--cyan)); transition: width .2s; }
+.primary-button:hover { transform:translateY(-2px); filter:brightness(1.1); }
+.hero .primary-button { min-width:210px; margin-top:12px; }
+.feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:30px 0; }
+.feature { padding:18px 14px; text-align:center; border-radius:17px; background:#ffffff08; border:1px solid #ffffff12; }
+.feature-icon { font-size:25px; margin-bottom:9px; }
+.feature strong { display:block; font-size:13px; }
+.feature span { display:block; color:var(--muted); font-size:11px; margin-top:5px; line-height:1.5; }
+.section-heading { font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); font-weight:800; margin:25px 0 13px; }
+.level-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.level-card { border:1px solid #ffffff16; border-radius:15px; background:#ffffff08; padding:15px 5px; color:white; text-align:center; transition:.2s; min-width:0; }
+.level-card:not(:disabled):hover { border-color:var(--purple); transform:translateY(-3px); background:#8b5cf622; }
+.level-card:disabled { opacity:.4; cursor:not-allowed; }
+.level-card .level-num { font-size:21px; font-weight:900; }
+.level-card small { display:block; color:var(--muted); font-size:10px; margin-top:5px; }
+.level-card .level-stars { color:var(--gold); font-size:12px; min-height:16px; margin-top:5px; }
+.level-nav { display:flex; justify-content:center; align-items:center; gap:16px; margin-top:14px; }
+.level-nav button { border:1px solid #ffffff20; background:#ffffff09; color:white; border-radius:10px; padding:9px 13px; }
+.level-nav button:disabled { opacity:.3; cursor:not-allowed; }
+.level-nav span { color:var(--muted); font-size:12px; }
+.home-best { text-align:center; margin-top:20px; color:var(--muted); font-size:13px; }
+.home-best strong { color:var(--gold); }
+.game-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:15px; }
+.back-button { background:transparent; color:var(--muted); border:1px solid #ffffff20; border-radius:11px; padding:10px 12px; }
+.level-label { text-align:center; }
+.level-label strong { display:block; font-size:17px; }
+.level-label small { color:var(--muted); font-size:11px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:18px 0; }
+.stat { text-align:center; padding:13px 5px; border-radius:14px; border:1px solid #ffffff13; background:#ffffff08; }
+.stat span { display:block; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+.stat strong { display:block; font-size:clamp(19px,4vw,26px); margin-top:5px; font-variant-numeric:tabular-nums; }
+.timer-warning { color:var(--pink)!important; animation:pulse .6s infinite alternate; }
+@keyframes pulse { to { opacity:.55; } }
+.progress-wrap { margin-bottom:14px; }
+.progress-info { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:8px; }
+.progress-track { height:7px; border-radius:10px; background:#ffffff14; overflow:hidden; }
+.progress-fill { width:0; height:100%; background:linear-gradient(90deg,var(--purple),var(--cyan)); transition:width .2s; }
 .arena {
-  position: relative; height: 360px; min-height: 300px; overflow: hidden;
-  border: 1px solid #ffffff1c; border-radius: 22px; background-color: #101832;
-  background-image: radial-gradient(#ffffff12 1px, transparent 1px); background-size: 22px 22px;
-  box-shadow: inset 0 0 45px #0004; touch-action: manipulation;
+  position:relative; height:360px; min-height:300px; overflow:hidden; border:1px solid #ffffff1c;
+  border-radius:22px; background-color:#101832; background-image:radial-gradient(#ffffff12 1px,transparent 1px);
+  background-size:22px 22px; box-shadow:inset 0 0 45px #0004; touch-action:manipulation;
 }
-.arena:focus-visible { outline: 2px solid var(--cyan); }
-.arena-hint { position: absolute; top: 14px; left: 0; right: 0; text-align: center; color: #9ba9ce; font-size: 11px; pointer-events: none; }
+.arena:focus-visible { outline:2px solid var(--cyan); }
+.arena-hint { position:absolute; top:14px; left:0; right:0; text-align:center; color:#9ba9ce; font-size:11px; pointer-events:none; }
 .target {
-  position: absolute; border: 0; border-radius: 50%; transform: translate(-50%, -50%); padding: 0; z-index: 2;
-  display: grid; place-items: center; color: white; font-size: 19px;
-  background: radial-gradient(circle, #ffedf4 0 10%, #ff6a9c 12% 28%, #df286a 30% 48%, #ff8bb5 50% 64%, #8f1649 66%);
-  box-shadow: 0 0 0 5px #ff548c18, 0 0 22px #ff548c88; animation: targetIn .16s ease-out;
+  position:absolute; border:0; border-radius:50%; transform:translate(-50%,-50%); padding:0; z-index:2;
+  display:grid; place-items:center; color:white; font-size:19px;
+  background:radial-gradient(circle,#ffedf4 0 10%,#ff6a9c 12% 28%,#df286a 30% 48%,#ff8bb5 50% 64%,#8f1649 66%);
+  box-shadow:0 0 0 5px #ff548c18,0 0 22px #ff548c88; animation:targetIn .16s ease-out;
 }
-.target:hover { filter: brightness(1.15); }
-.target:active { transform: translate(-50%, -50%) scale(.87); }
+.target:hover { filter:brightness(1.15); }
+.target:active { transform:translate(-50%,-50%) scale(.87); }
 .target.golden {
-  background: radial-gradient(circle, #fffbd3 0 12%, #ffe66a 14% 30%, #ffb91e 32% 49%, #fff09a 51% 65%, #bc7600 67%);
-  box-shadow: 0 0 0 6px #ffd44725, 0 0 28px #ffd447aa;
+  background:radial-gradient(circle,#fffbd3 0 12%,#ffe66a 14% 30%,#ffb91e 32% 49%,#fff09a 51% 65%,#bc7600 67%);
+  box-shadow:0 0 0 6px #ffd44725,0 0 28px #ffd447aa;
 }
-@keyframes targetIn { from { opacity: .3; scale: .65; } to { opacity: 1; scale: 1; } }
-.float-score { position: absolute; z-index: 5; pointer-events: none; color: var(--cyan); font-weight: 1000; font-size: 23px; animation: rise .7s forwards; }
-.float-score.gold { color: var(--gold); }
-@keyframes rise { to { transform: translateY(-45px); opacity: 0; } }
-.arena-bottom { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 11px; padding: 12px 3px; }
-.arena-bottom strong { color: var(--gold); }
+@keyframes targetIn { from { opacity:.3; scale:.65; } to { opacity:1; scale:1; } }
+.float-score { position:absolute; z-index:5; pointer-events:none; color:var(--cyan); font-weight:1000; font-size:23px; animation:rise .7s forwards; }
+.float-score.gold { color:var(--gold); }
+@keyframes rise { to { transform:translateY(-45px); opacity:0; } }
+.arena-bottom { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:11px; padding:12px 3px; }
+.arena-bottom strong { color:var(--gold); }
 .overlay {
-  position: absolute; inset: 0; z-index: 10; display: none; align-items: center; justify-content: center;
-  padding: 20px; background: #0b1024df; backdrop-filter: blur(8px); text-align: center;
+  position:absolute; inset:0; z-index:10; display:none; align-items:center; justify-content:center;
+  padding:20px; background:#0b1024df; backdrop-filter:blur(8px); text-align:center;
 }
-.overlay.show { display: flex; }
-.result-card { max-width: 350px; width: 100%; }
-.result-icon { font-size: 45px; }
-.result-card h2 { font-size: 31px; margin: 12px 0 8px; }
-.result-card p { color: var(--muted); line-height: 1.6; font-size: 14px; }
-.result-score { font-size: 35px; color: var(--gold); font-weight: 1000; margin: 15px 0; }
-.result-stars { font-size: 27px; color: var(--gold); letter-spacing: 4px; }
-.result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
-.secondary-button { border: 1px solid #ffffff25; color: white; background: #ffffff0d; border-radius: 13px; padding: 13px 17px; font-weight: 800; }
-footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; }
-
-/* Reserved for a future approved advertisement placement.
-   No advertisement is loaded by this game yet. */
-.ad-slot { display: none; }
-
-@media (max-width: 540px) {
-  .app { padding: 16px 12px 25px; }
-  .topbar { margin-bottom: 10px; }
-  .hero { padding-top: 25px; }
-  h1 { letter-spacing: -2px; }
-  .feature-grid { gap: 7px; }
-  .feature { padding: 14px 6px; }
-  .level-grid { gap: 6px; }
-  .level-card { padding: 12px 2px; }
-  .arena { height: 340px; min-height: 290px; }
-  .stats { gap: 6px; }
-  .stat { padding: 11px 2px; }
-  .game-header { gap: 5px; }
-  .back-button, .icon-button { padding: 9px 8px; font-size: 12px; }
+.overlay.show { display:flex; }
+.result-card { max-width:350px; width:100%; }
+.result-icon { font-size:45px; }
+.result-card h2 { font-size:31px; margin:12px 0 8px; }
+.result-card p { color:var(--muted); line-height:1.6; font-size:14px; }
+.result-score { font-size:35px; color:var(--gold); font-weight:1000; margin:15px 0; }
+.result-stars { font-size:27px; color:var(--gold); letter-spacing:4px; }
+.result-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+.secondary-button { border:1px solid #ffffff25; color:white; background:#ffffff0d; border-radius:13px; padding:13px 17px; font-weight:800; }
+.ad-slot { display:none; }
+footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
+@media (max-width:540px) {
+  .app { padding:16px 12px 25px; }
+  .topbar { margin-bottom:10px; }
+  .hero { padding-top:25px; }
+  h1 { letter-spacing:-2px; }
+  .feature-grid { gap:7px; }
+  .feature { padding:14px 6px; }
+  .level-grid { gap:6px; }
+  .level-card { padding:12px 2px; }
+  .arena { height:340px; min-height:290px; }
+  .stats { gap:6px; }
+  .stat { padding:11px 2px; }
+  .game-header { gap:5px; }
+  .back-button,.icon-button { padding:9px 8px; font-size:12px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
 }
 </style>
 </head>
@@ -192,7 +170,7 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
         <h1>Test your<br><span class="gradient-text">reflexes.</span></h1>
         <p class="subtitle">Think fast. Tap faster. Hit the targets, collect bonus points, and see how far you can go!</p>
         <div class="target-showcase"><div class="demo-target">🎯</div></div>
-        <button class="primary-button" id="playButton">PLAY GAME&nbsp; →</button>
+        <button class="primary-button" id="playButton">PLAY GAME →</button>
       </div>
 
       <div class="feature-grid">
@@ -249,9 +227,8 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     </section>
   </main>
 
-  <!-- Future ad placement can be added here after ad-network approval. -->
+  <!-- Reserved for future approved advertisement placement. -->
   <div class="ad-slot" id="adSlot"></div>
-
   <footer>Made for quick fingers and sharp reflexes ✨</footer>
 </div>
 
@@ -259,12 +236,21 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
 (() => {
   "use strict";
 
-  const FIRST_LEVEL_TAPS = [10, 15, 20, 25, 30];
-  const FIRST_LEVEL_SIZES = [60, 52, 45, 39, 34];
+  const FIRST_LEVEL_TAPS = [10,15,20,25,30];
+  const FIRST_LEVEL_SIZES = [60,52,45,39,34];
   const TIME_LIMIT = 30;
   const LIVES_PER_LEVEL = 3;
   const PAGE_SIZE = 10;
   const STORAGE_KEY = "tapTheTargetArcadeV2";
+
+  // SIMULATED ADS FOR TESTING ONLY. No real ads are loaded.
+  const AD_REWARD_RULES = [
+    { maxLevel:5, seconds:0, maxAds:0 },
+    { maxLevel:10, seconds:5, maxAds:2 },
+    { maxLevel:20, seconds:7, maxAds:2 },
+    { maxLevel:30, seconds:10, maxAds:2 },
+    { maxLevel:Infinity, seconds:10, maxAds:3 }
+  ];
 
   const $ = id => document.getElementById(id);
   const homeScreen = $("homeScreen");
@@ -281,66 +267,58 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
   let lives = LIVES_PER_LEVEL;
   let timerId = null;
   let active = false;
+  let extraAdsUsedThisLevel = 0;
   let pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
   let soundEnabled = data.soundEnabled !== false;
   let audioContext = null;
 
   function loadData() {
-    const defaults = { unlocked: 1, bestScores: [], stars: [], soundEnabled: true };
+    const defaults = { unlocked:1, bestScores:[], stars:[], soundEnabled:true };
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
       const unlocked = Number.isFinite(Number(saved.unlocked)) ? Math.floor(Number(saved.unlocked)) : 1;
       return {
-        unlocked: Math.max(1, Math.min(100000, unlocked)),
-        bestScores: Array.isArray(saved.bestScores) ? saved.bestScores : defaults.bestScores,
-        stars: Array.isArray(saved.stars) ? saved.stars : defaults.stars,
-        soundEnabled: saved.soundEnabled !== false
+        unlocked:Math.max(1,Math.min(100000,unlocked)),
+        bestScores:Array.isArray(saved.bestScores) ? saved.bestScores : [],
+        stars:Array.isArray(saved.stars) ? saved.stars : [],
+        soundEnabled:saved.soundEnabled !== false
       };
-    } catch {
-      return defaults;
-    }
+    } catch { return defaults; }
   }
 
   function saveData() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+    try { localStorage.setItem(STORAGE_KEY,JSON.stringify(data)); } catch {}
   }
 
   function tapsRequired(n) {
-    if (n <= 5) return FIRST_LEVEL_TAPS[n - 1];
-    return 30 + (n - 5) * 5;
+    if (n <= 5) return FIRST_LEVEL_TAPS[n-1];
+    return 30 + (n-5)*5;
   }
 
   function targetSize(n) {
-    if (n <= 5) return FIRST_LEVEL_SIZES[n - 1];
-    return Math.max(24, 34 - (n - 5));
+    if (n <= 5) return FIRST_LEVEL_SIZES[n-1];
+    return Math.max(24,34-(n-5));
   }
 
   function levelName(n) {
     const names = {
-      1: "WARM UP",
-      2: "PICK UP SPEED",
-      3: "GETTING QUICK",
-      4: "REFLEX MASTER",
-      5: "ULTIMATE CHALLENGE"
+      1:"WARM UP",2:"PICK UP SPEED",3:"GETTING QUICK",
+      4:"REFLEX MASTER",5:"ULTIMATE CHALLENGE"
     };
     return names[n] || (n < 15 ? "REFLEX PRO" : n < 30 ? "SPEED LEGEND" : "ENDLESS CHALLENGE");
   }
 
-  function bestFor(n) {
-    return Number(data.bestScores[n - 1]) || 0;
-  }
+  function bestFor(n) { return Number(data.bestScores[n-1]) || 0; }
+  function starsFor(n) { return Math.max(0,Math.min(3,Number(data.stars[n-1]) || 0)); }
+  function totalBest() { return Math.max(0,...data.bestScores.map(n => Number(n) || 0)); }
 
-  function starsFor(n) {
-    return Math.max(0, Math.min(3, Number(data.stars[n - 1]) || 0));
-  }
-
-  function totalBest() {
-    return Math.max(0, ...data.bestScores.map(n => Number(n) || 0));
+  function getAdReward(n) {
+    return AD_REWARD_RULES.find(rule => n <= rule.maxLevel);
   }
 
   function showScreen(screen) {
-    homeScreen.classList.toggle("active", screen === "home");
-    gameScreen.classList.toggle("active", screen === "game");
+    homeScreen.classList.toggle("active",screen === "home");
+    gameScreen.classList.toggle("active",screen === "game");
   }
 
   function renderLevels() {
@@ -348,21 +326,19 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     grid.innerHTML = "";
 
     const pageEnd = pageStart + PAGE_SIZE - 1;
-    for (let number = pageStart; number <= pageEnd; number++) {
+    for (let number=pageStart; number<=pageEnd; number++) {
       const unlocked = number <= data.unlocked;
       const card = document.createElement("button");
       card.className = "level-card";
       card.disabled = !unlocked;
-
-      const stars = "★".repeat(starsFor(number)) + "☆".repeat(3 - starsFor(number));
+      const stars = "★".repeat(starsFor(number)) + "☆".repeat(3-starsFor(number));
       card.innerHTML = `
         <div class="level-num">${unlocked ? number : "🔒"}</div>
         <small>${tapsRequired(number)} taps</small>
-        <div class="level-stars">${unlocked ? stars : "Locked"}</div>
-      `;
+        <div class="level-stars">${unlocked ? stars : "Locked"}</div>`;
       if (unlocked) {
-        card.setAttribute("aria-label", `Play level ${number}, ${tapsRequired(number)} taps required`);
-        card.addEventListener("click", () => startLevel(number));
+        card.setAttribute("aria-label",`Play level ${number}, ${tapsRequired(number)} taps required`);
+        card.addEventListener("click",() => startLevel(number));
       }
       grid.appendChild(card);
     }
@@ -372,15 +348,15 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     $("pageLabel").textContent = `Levels ${pageStart}–${pageEnd}`;
     $("homeBest").textContent = totalBest();
     $("highestLevel").textContent = data.unlocked;
-    $("playButton").textContent = `PLAY LEVEL ${data.unlocked}  →`;
+    $("playButton").textContent = `PLAY LEVEL ${data.unlocked} →`;
   }
 
   function updateSoundButton() {
     $("soundButton").textContent = soundEnabled ? "🔊 Sound" : "🔇 Sound";
-    $("soundButton").setAttribute("aria-pressed", String(soundEnabled));
+    $("soundButton").setAttribute("aria-pressed",String(soundEnabled));
   }
 
-  function playTone(frequency, duration = .08, type = "sine", volume = .045) {
+  function playTone(frequency,duration=.08,type="sine",volume=.045) {
     if (!soundEnabled) return;
     try {
       audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -388,59 +364,68 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
       oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-      gain.gain.setValueAtTime(volume, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + duration);
+      oscillator.frequency.setValueAtTime(frequency,audioContext.currentTime);
+      gain.gain.setValueAtTime(volume,audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
       oscillator.connect(gain);
       gain.connect(audioContext.destination);
       oscillator.start();
-      oscillator.stop(audioContext.currentTime + duration);
+      oscillator.stop(audioContext.currentTime+duration);
     } catch {}
   }
 
   function updateStats() {
     $("scoreValue").textContent = score;
     $("timeValue").textContent = timeLeft;
-    $("timeValue").classList.toggle("timer-warning", timeLeft <= 8);
-    $("livesValue").textContent = "❤️".repeat(lives) + "🖤".repeat(LIVES_PER_LEVEL - lives);
+    $("timeValue").classList.toggle("timer-warning",timeLeft<=8);
+    $("livesValue").textContent = "❤️".repeat(lives) + "🖤".repeat(LIVES_PER_LEVEL-lives);
     $("bestValue").textContent = bestFor(level);
-
     const required = tapsRequired(level);
     $("progressText").textContent = `${taps} / ${required} taps`;
-    $("progressFill").style.width = `${Math.min(100, taps / required * 100)}%`;
+    $("progressFill").style.width = `${Math.min(100,taps/required*100)}%`;
   }
 
   function moveTarget() {
     if (!active) return;
-
     const rect = arena.getBoundingClientRect();
     const size = targetSize(level);
     const padding = 12;
-    const minX = Math.min(padding + size / 2, rect.width / 2);
-    const maxX = Math.max(minX, rect.width - padding - size / 2);
-    const minY = Math.min(48 + size / 2, rect.height / 2);
-    const maxY = Math.max(minY, rect.height - padding - size / 2);
-
-    target.style.left = `${minX + Math.random() * (maxX - minX)}px`;
-    target.style.top = `${minY + Math.random() * (maxY - minY)}px`;
+    const minX = Math.min(padding+size/2,rect.width/2);
+    const maxX = Math.max(minX,rect.width-padding-size/2);
+    const minY = Math.min(48+size/2,rect.height/2);
+    const maxY = Math.max(minY,rect.height-padding-size/2);
+    target.style.left = `${minX+Math.random()*(maxX-minX)}px`;
+    target.style.top = `${minY+Math.random()*(maxY-minY)}px`;
     target.style.width = `${size}px`;
     target.style.height = `${size}px`;
-
-    const golden = Math.random() < 0.15;
-    target.classList.toggle("golden", golden);
+    const golden = Math.random() < .15;
+    target.classList.toggle("golden",golden);
     target.textContent = golden ? "★" : "";
-    target.setAttribute("aria-label", golden ? "Golden target, worth 3 points" : "Target, worth 1 point");
+    target.setAttribute("aria-label",golden ? "Golden target, worth 3 points" : "Target, worth 1 point");
     target.hidden = false;
   }
 
-  function floatScore(x, y, amount, golden) {
+  function floatScore(x,y,amount,golden) {
     const popup = document.createElement("div");
     popup.className = "float-score" + (golden ? " gold" : "");
     popup.textContent = `+${amount}`;
     popup.style.left = `${x}px`;
     popup.style.top = `${y}px`;
     arena.appendChild(popup);
-    setTimeout(() => popup.remove(), 720);
+    setTimeout(() => popup.remove(),720);
+  }
+
+  function startTimer() {
+    clearInterval(timerId);
+    timerId = setInterval(() => {
+      if (!active) return;
+      timeLeft--;
+      updateStats();
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        showExtraTimeOffer();
+      }
+    },1000);
   }
 
   function startLevel(number) {
@@ -453,47 +438,86 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     taps = 0;
     timeLeft = TIME_LIMIT;
     lives = LIVES_PER_LEVEL;
+    extraAdsUsedThisLevel = 0;
     active = true;
 
     overlay.classList.remove("show");
     $("levelTitle").textContent = `LEVEL ${level}`;
     $("levelSubtitle").textContent = levelName(level);
     target.hidden = false;
-
     showScreen("game");
     updateStats();
     moveTarget();
-
-    timerId = setInterval(() => {
-      if (!active) return;
-      timeLeft--;
-      updateStats();
-      if (timeLeft <= 0) {
-        finishLevel(false, "Time is up! Try again and beat your best.");
-      }
-    }, 1000);
+    startTimer();
   }
 
-  function finishLevel(won, message) {
+  function showExtraTimeOffer() {
+    const rule = getAdReward(level);
+
+    if (!rule || rule.maxAds === 0 || extraAdsUsedThisLevel >= rule.maxAds) {
+      finishLevel(false,"Time is up! Try again and beat your best.");
+      return;
+    }
+
+    active = false;
+    clearInterval(timerId);
+    target.hidden = true;
+
+    const remainingOffers = rule.maxAds-extraAdsUsedThisLevel;
+    $("resultIcon").textContent = "⏱️";
+    $("resultTitle").textContent = "Need More Time?";
+    $("resultMessage").textContent =
+      `Test mode only: simulate a rewarded ad to get ${rule.seconds} extra seconds. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`;
+    $("resultScore").textContent = `${score} points`;
+    $("resultStars").textContent = "";
+
+    const actions = $("resultActions");
+    actions.innerHTML = "";
+
+    const watchButton = document.createElement("button");
+    watchButton.className = "primary-button";
+    watchButton.textContent = `▶ Test Ad (+${rule.seconds}s)`;
+    watchButton.addEventListener("click",() => {
+      if (active) return;
+      extraAdsUsedThisLevel++;
+      timeLeft = rule.seconds;
+      active = true;
+      overlay.classList.remove("show");
+      updateStats();
+      moveTarget();
+      startTimer();
+    });
+    actions.appendChild(watchButton);
+
+    const quitButton = document.createElement("button");
+    quitButton.className = "secondary-button";
+    quitButton.textContent = "No Thanks";
+    quitButton.addEventListener("click",() => {
+      if (active) return;
+      active = true;
+      finishLevel(false,"Time is up! Try again and beat your best.");
+    });
+    actions.appendChild(quitButton);
+    overlay.classList.add("show");
+  }
+
+  function finishLevel(won,message) {
     if (!active) return;
     active = false;
     clearInterval(timerId);
     target.hidden = true;
 
-    data.bestScores[level - 1] = Math.max(bestFor(level), score);
+    data.bestScores[level-1] = Math.max(bestFor(level),score);
     let earnedStars = 0;
 
     if (won) {
       earnedStars = timeLeft >= 15 ? 3 : timeLeft >= 8 ? 2 : 1;
-      data.stars[level - 1] = Math.max(starsFor(level), earnedStars);
-
-      // Unlock the next level. Levels are generated dynamically.
-      data.unlocked = Math.max(data.unlocked, level + 1);
-
-      playTone(660, .12);
-      setTimeout(() => playTone(880, .18), 120);
+      data.stars[level-1] = Math.max(starsFor(level),earnedStars);
+      data.unlocked = Math.max(data.unlocked,level+1);
+      playTone(660,.12);
+      setTimeout(() => playTone(880,.18),120);
     } else {
-      playTone(170, .25, "triangle");
+      playTone(170,.25,"triangle");
     }
 
     saveData();
@@ -502,33 +526,31 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     $("resultIcon").textContent = won ? "🎉" : "⏱️";
     $("resultTitle").textContent = won ? "Level Complete!" : "Game Over!";
     $("resultMessage").textContent = won
-      ? `${message} Level ${level + 1} is now unlocked!`
+      ? `${message} Level ${level+1} is now unlocked!`
       : message;
-    $("resultScore").textContent = `${score} point${score === 1 ? "" : "s"}`;
-    $("resultStars").textContent = won
-      ? "★".repeat(earnedStars) + "☆".repeat(3 - earnedStars)
-      : "☆☆☆";
+    $("resultScore").textContent = `${score} point${score===1?"":"s"}`;
+    $("resultStars").textContent = won ? "★".repeat(earnedStars)+"☆".repeat(3-earnedStars) : "☆☆☆";
 
     const actions = $("resultActions");
     actions.innerHTML = "";
 
-    function addAction(label, className, handler) {
+    function addAction(label,className,handler) {
       const button = document.createElement("button");
       button.className = className;
       button.textContent = label;
-      button.addEventListener("click", handler);
+      button.addEventListener("click",handler);
       actions.appendChild(button);
     }
 
     if (won) {
-      addAction(`Next Level ${level + 1} →`, "primary-button", () => startLevel(level + 1));
+      addAction(`Next Level ${level+1} →`,"primary-button",() => startLevel(level+1));
     } else {
-      addAction("Try Again", "primary-button", () => startLevel(level));
+      addAction("Try Again","primary-button",() => startLevel(level));
     }
 
-    addAction("Home", "secondary-button", () => {
+    addAction("Home","secondary-button",() => {
       overlay.classList.remove("show");
-      pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
+      pageStart = Math.max(1,Math.floor((data.unlocked-1)/PAGE_SIZE)*PAGE_SIZE+1);
       showScreen("home");
       renderLevels();
     });
@@ -536,7 +558,7 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     overlay.classList.add("show");
   }
 
-  target.addEventListener("click", event => {
+  target.addEventListener("click",event => {
     event.stopPropagation();
     if (!active) return;
 
@@ -544,75 +566,60 @@ footer { text-align: center; color: #717da4; font-size: 11px; margin-top: 28px; 
     const arenaRect = arena.getBoundingClientRect();
     const golden = target.classList.contains("golden");
     const points = golden ? 3 : 1;
-
     score += points;
     taps++;
 
-    floatScore(
-      rect.left - arenaRect.left + rect.width / 2,
-      rect.top - arenaRect.top,
-      points,
-      golden
-    );
-
-    playTone(golden ? 1050 : 620, golden ? .15 : .07, golden ? "sine" : "triangle");
+    floatScore(rect.left-arenaRect.left+rect.width/2,rect.top-arenaRect.top,points,golden);
+    playTone(golden ? 1050 : 620,golden ? .15 : .07,golden ? "sine" : "triangle");
     updateStats();
 
-    if (taps >= tapsRequired(level)) {
-      finishLevel(true, "You reached the target!");
-    } else {
-      moveTarget();
-    }
+    if (taps >= tapsRequired(level)) finishLevel(true,"You reached the target!");
+    else moveTarget();
   });
 
-  arena.addEventListener("click", event => {
-    if (!active || event.target === target ||
-        event.target.closest(".overlay") || event.target.closest(".target")) return;
-
+  arena.addEventListener("click",event => {
+    if (!active || event.target===target || event.target.closest(".overlay") || event.target.closest(".target")) return;
     lives--;
-    playTone(150, .13, "square", .025);
+    playTone(150,.13,"square",.025);
     updateStats();
-
-    if (lives <= 0) {
-      finishLevel(false, "You ran out of lives. Tap only the target!");
-    }
+    if (lives<=0) finishLevel(false,"You ran out of lives. Tap only the target!");
   });
 
-  $("playButton").addEventListener("click", () => startLevel(data.unlocked));
+  $("playButton").addEventListener("click",() => startLevel(data.unlocked));
 
-  $("homeButton").addEventListener("click", () => {
+  $("homeButton").addEventListener("click",() => {
     if (active) {
       active = false;
       clearInterval(timerId);
       target.hidden = true;
     }
     overlay.classList.remove("show");
-    pageStart = Math.max(1, Math.floor((data.unlocked - 1) / PAGE_SIZE) * PAGE_SIZE + 1);
+    pageStart = Math.max(1,Math.floor((data.unlocked-1)/PAGE_SIZE)*PAGE_SIZE+1);
     showScreen("home");
     renderLevels();
   });
 
-  $("restartButton").addEventListener("click", () => startLevel(level));
+  $("restartButton").addEventListener("click",() => startLevel(level));
 
-  $("prevLevels").addEventListener("click", () => {
-    pageStart = Math.max(1, pageStart - PAGE_SIZE);
+  $("prevLevels").addEventListener("click",() => {
+    pageStart = Math.max(1,pageStart-PAGE_SIZE);
     renderLevels();
   });
 
-  $("nextLevels").addEventListener("click", () => {
-  pageStart += PAGE_SIZE;
-  renderLevels();
-});
+  $("nextLevels").addEventListener("click",() => {
+    pageStart += PAGE_SIZE;
+    renderLevels();
+  });
 
-  $("soundButton").addEventListener("click", () => {
+  $("soundButton").addEventListener("click",() => {
     soundEnabled = !soundEnabled;
     data.soundEnabled = soundEnabled;
     saveData();
     updateSoundButton();
-    if (soundEnabled) playTone(700, .08);
+    if (soundEnabled) playTone(700,.08);
   });
 
-  window.addEventListener("resize", () => {
+  window.addEventListener("resize",() => {
     if (active) moveTarget();
   });
 
