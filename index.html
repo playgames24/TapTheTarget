@@ -151,6 +151,7 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
   *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
 }
 </style>
+<script src="https://cdn.y8.com/minimal-sdk/2-0/y8.min.js" async></script>
 </head>
 
 <body>
@@ -235,6 +236,36 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
 <script>
 (() => {
   "use strict";
+
+  // Y8 SDK initialization
+  let y8Sdk = null;
+
+  window.addEventListener("y8sdk.ready", function () {
+    try {
+      y8Sdk = y8.sdk();
+      const appConfig = {
+        appId: "6ade23758ed40068fb2e32f3",
+        autoLogin: true
+      };
+      const adConfig = {
+        gameId: "289477",
+        preloadAdBreaks: "on",
+        sound: "on",
+        onReady: () => console.info("Y8 advertising is ready.")
+      };
+      y8Sdk.init(appConfig, adConfig);
+      y8Sdk.onAuth((user, error) => {
+        if (error) console.warn("Y8 authentication:", error);
+      });
+    } catch (error) {
+      console.error("Y8 SDK initialization failed:", error);
+    }
+  }, { once: true });
+
+  // Covers the case where the async SDK loaded before the listener.
+  if (window.y8 && window.y8.emitReadyEvent) {
+    window.y8.emitReadyEvent();
+  }
 
   const FIRST_LEVEL_TAPS = [10,15,20,25,30];
   const FIRST_LEVEL_SIZES = [60,52,45,39,34];
@@ -470,7 +501,6 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     }
 
     const rewardSeconds = rule.rewards[extraAdsUsedThisLevel];
-
     active = false;
     clearInterval(timerId);
     target.hidden = true;
@@ -479,7 +509,7 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     $("resultIcon").textContent = "⏱️";
     $("resultTitle").textContent = "Need More Time?";
     $("resultMessage").textContent =
-      `Test mode only: simulate a rewarded ad to get ${rewardSeconds} extra seconds. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`;
+      `Watch an optional ad to receive ${rewardSeconds} extra seconds. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`;
     $("resultScore").textContent = `${score} points`;
     $("resultStars").textContent = "";
 
@@ -488,25 +518,85 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
 
     const watchButton = document.createElement("button");
     watchButton.className = "primary-button";
-    watchButton.textContent = `▶ Test Ad (+${rewardSeconds}s)`;
-    watchButton.addEventListener("click",() => {
-      if (active) return;
-      extraAdsUsedThisLevel++;
-      timeLeft += rewardSeconds;
-      active = true;
-      overlay.classList.remove("show");
-      updateStats();
-      moveTarget();
-      startTimer();
+    watchButton.textContent = `▶ Watch Ad (+${rewardSeconds}s)`;
+
+    let adRequestPending = false;
+    let rewardGranted = false;
+
+    watchButton.addEventListener("click", () => {
+      if (adRequestPending || rewardGranted) return;
+
+      if (!y8Sdk) {
+        $("resultMessage").textContent =
+          "The Y8 ad system is not ready yet. Please try again in a moment, or choose No Thanks.";
+        return;
+      }
+
+      adRequestPending = true;
+      watchButton.disabled = true;
+      watchButton.textContent = "Loading ad…";
+
+      y8Sdk.showAd({
+        type: "reward",
+        name: "extra-time",
+        beforeAd: () => {
+          if (audioContext && audioContext.state === "running") {
+            audioContext.suspend().catch(() => {});
+          }
+        },
+        afterAd: () => {
+          if (audioContext && soundEnabled && audioContext.state === "suspended") {
+            audioContext.resume().catch(() => {});
+          }
+        },
+        beforeReward: (showAdFn) => showAdFn(),
+        adViewed: () => {
+          if (rewardGranted) return;
+          rewardGranted = true;
+          extraAdsUsedThisLevel++;
+          timeLeft += rewardSeconds;
+          adRequestPending = false;
+          active = true;
+          overlay.classList.remove("show");
+          updateStats();
+          moveTarget();
+          startTimer();
+        },
+        adDismissed: () => {
+          $("resultMessage").textContent =
+            "The ad was closed before completion, so no extra time was added. You can try again or choose No Thanks.";
+        },
+        adBreakDone: (info) => {
+          adRequestPending = false;
+          if (rewardGranted) return;
+
+          const status = info && info.breakStatus ? info.breakStatus : "unavailable";
+          $("resultMessage").textContent = status === "dismissed"
+            ? "The ad was closed before completion. No extra time was added."
+            : "No rewarded ad is available right now. Your score and taps are safe. Please try again later or choose No Thanks.";
+
+          watchButton.disabled = false;
+          watchButton.textContent = `▶ Try Ad Again (+${rewardSeconds}s)`;
+        }
+      }).catch((error) => {
+        console.error("Y8 rewarded ad request failed:", error);
+        adRequestPending = false;
+        if (!rewardGranted) {
+          $("resultMessage").textContent =
+            "The ad could not be loaded. No extra time was added. Please try again or choose No Thanks.";
+          watchButton.disabled = false;
+          watchButton.textContent = `▶ Try Ad Again (+${rewardSeconds}s)`;
+        }
+      });
     });
+
     actions.appendChild(watchButton);
 
     const quitButton = document.createElement("button");
     quitButton.className = "secondary-button";
     quitButton.textContent = "No Thanks";
-    quitButton.addEventListener("click",() => {
-      if (active) return;
-      active = true;
+    quitButton.addEventListener("click", () => {
+      if (adRequestPending || active) return;
       finishLevel(false,"Time is up! Try again and beat your best.");
     });
     actions.appendChild(quitButton);
@@ -555,7 +645,40 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     }
 
     if (won) {
-      addAction(`Next Level ${level+1} →`,"primary-button",() => startLevel(level+1));
+      addAction(`Next Level ${level+1} →`,"primary-button",() => {
+        const nextLevel = level + 1;
+
+        if (!y8Sdk) {
+          startLevel(nextLevel);
+          return;
+        }
+
+        let continued = false;
+        const continueToNextLevel = () => {
+          if (continued) return;
+          continued = true;
+          startLevel(nextLevel);
+        };
+
+        y8Sdk.showAd({
+          type: "next",
+          name: "level-complete",
+          beforeAd: () => {
+            if (audioContext && audioContext.state === "running") {
+              audioContext.suspend().catch(() => {});
+            }
+          },
+          afterAd: () => {
+            if (audioContext && soundEnabled && audioContext.state === "suspended") {
+              audioContext.resume().catch(() => {});
+            }
+          },
+          adBreakDone: () => continueToNextLevel()
+        }).catch((error) => {
+          console.error("Y8 interstitial request failed:", error);
+          continueToNextLevel();
+        });
+      });
     } else {
       addAction("Try Again","primary-button",() => startLevel(level));
     }
