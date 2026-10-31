@@ -603,6 +603,9 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     quitButton.textContent = "No Thanks";
     quitButton.addEventListener("click", () => {
       if (adRequestPending || active) return;
+      // The game is paused while this offer is displayed. Reactivate briefly
+      // so finishLevel can run its normal game-over and save logic.
+      active = true;
       finishLevel(false, isLifeReward
         ? "You ran out of lives. Tap only the target!"
         : "Time is up! Try again and beat your best.");
