@@ -464,7 +464,7 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
       updateStats();
       if (timeLeft <= 0) {
         clearInterval(timerId);
-        showExtraTimeOffer();
+        showRewardOffer("time");
       }
     },1000);
   }
@@ -492,24 +492,28 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     startTimer();
   }
 
-  function showExtraTimeOffer() {
+  function showRewardOffer(reason) {
     const rule = getAdReward(level);
 
     if (!rule || rule.rewards.length === 0 || extraAdsUsedThisLevel >= rule.rewards.length) {
-      finishLevel(false,"Time is up! Try again and beat your best.");
+      finishLevel(false, reason === "life"
+        ? "You ran out of lives. Tap only the target!"
+        : "Time is up! Try again and beat your best.");
       return;
     }
 
+    const isLifeReward = reason === "life";
     const rewardSeconds = rule.rewards[extraAdsUsedThisLevel];
     active = false;
     clearInterval(timerId);
     target.hidden = true;
 
     const remainingOffers = rule.rewards.length-extraAdsUsedThisLevel;
-    $("resultIcon").textContent = "⏱️";
-    $("resultTitle").textContent = "Need More Time?";
-    $("resultMessage").textContent =
-      `Watch an optional ad to receive ${rewardSeconds} extra seconds. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`;
+    $("resultIcon").textContent = isLifeReward ? "❤️" : "⏱️";
+    $("resultTitle").textContent = isLifeReward ? "Need Another Life?" : "Need More Time?";
+    $("resultMessage").textContent = isLifeReward
+      ? `Watch an optional ad to restore 1 life and continue this level. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`
+      : `Watch an optional ad to receive ${rewardSeconds} extra seconds. Your score and taps will be kept. You have ${remainingOffers} offer${remainingOffers===1?"":"s"} remaining.`;
     $("resultScore").textContent = `${score} points`;
     $("resultStars").textContent = "";
 
@@ -518,7 +522,8 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
 
     const watchButton = document.createElement("button");
     watchButton.className = "primary-button";
-    watchButton.textContent = `▶ Watch Ad (+${rewardSeconds}s)`;
+    const rewardLabel = isLifeReward ? "+1 Life" : `+${rewardSeconds}s`;
+    watchButton.textContent = `▶ Watch Ad (${rewardLabel})`;
 
     let adRequestPending = false;
     let rewardGranted = false;
@@ -538,7 +543,7 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
 
       y8Sdk.showAd({
         type: "reward",
-        name: "extra-time",
+        name: isLifeReward ? "extra-life" : "extra-time",
         beforeAd: () => {
           if (audioContext && audioContext.state === "running") {
             audioContext.suspend().catch(() => {});
@@ -554,7 +559,8 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
           if (rewardGranted) return;
           rewardGranted = true;
           extraAdsUsedThisLevel++;
-          timeLeft += rewardSeconds;
+          if (isLifeReward) lives = 1;
+          else timeLeft += rewardSeconds;
           adRequestPending = false;
           active = true;
           overlay.classList.remove("show");
@@ -563,8 +569,9 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
           startTimer();
         },
         adDismissed: () => {
-          $("resultMessage").textContent =
-            "The ad was closed before completion, so no extra time was added. You can try again or choose No Thanks.";
+          $("resultMessage").textContent = isLifeReward
+            ? "The ad was closed before completion, so no life was restored. You can try again or choose No Thanks."
+            : "The ad was closed before completion, so no extra time was added. You can try again or choose No Thanks.";
         },
         adBreakDone: (info) => {
           adRequestPending = false;
@@ -572,20 +579,19 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
 
           const status = info && info.breakStatus ? info.breakStatus : "unavailable";
           $("resultMessage").textContent = status === "dismissed"
-            ? "The ad was closed before completion. No extra time was added."
+            ? (isLifeReward ? "The ad was closed before completion. No life was restored." : "The ad was closed before completion. No extra time was added.")
             : "No rewarded ad is available right now. Your score and taps are safe. Please try again later or choose No Thanks.";
 
           watchButton.disabled = false;
-          watchButton.textContent = `▶ Try Ad Again (+${rewardSeconds}s)`;
+          watchButton.textContent = `▶ Try Ad Again (${rewardLabel})`;
         }
       }).catch((error) => {
         console.error("Y8 rewarded ad request failed:", error);
         adRequestPending = false;
         if (!rewardGranted) {
-          $("resultMessage").textContent =
-            "The ad could not be loaded. No extra time was added. Please try again or choose No Thanks.";
+          $("resultMessage").textContent = "The ad could not be loaded. No reward was granted. Please try again or choose No Thanks.";
           watchButton.disabled = false;
-          watchButton.textContent = `▶ Try Ad Again (+${rewardSeconds}s)`;
+          watchButton.textContent = `▶ Try Ad Again (${rewardLabel})`;
         }
       });
     });
@@ -597,7 +603,9 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     quitButton.textContent = "No Thanks";
     quitButton.addEventListener("click", () => {
       if (adRequestPending || active) return;
-      finishLevel(false,"Time is up! Try again and beat your best.");
+      finishLevel(false, isLifeReward
+        ? "You ran out of lives. Tap only the target!"
+        : "Time is up! Try again and beat your best.");
     });
     actions.appendChild(quitButton);
     overlay.classList.add("show");
@@ -717,7 +725,7 @@ footer { text-align:center; color:#717da4; font-size:11px; margin-top:28px; }
     lives--;
     playTone(150,.13,"square",.025);
     updateStats();
-    if (lives<=0) finishLevel(false,"You ran out of lives. Tap only the target!");
+    if (lives<=0) showRewardOffer("life");
   });
 
   $("playButton").addEventListener("click",() => startLevel(data.unlocked));
